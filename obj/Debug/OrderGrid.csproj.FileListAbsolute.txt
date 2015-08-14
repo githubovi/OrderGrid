@@ -9,3 +9,8 @@ c:\users\osana\documents\visual studio 2013\Projects\OrderGrid\OrderGrid\obj\Deb
 E:\_personale\professional\software\Visual Studio Projects\visualstudioonline\ovisan79@yahoo.com\OrderGrid\OrderGrid\bin\Debug\OrderGrid.exe.config
 E:\_personale\professional\software\Visual Studio Projects\visualstudioonline\ovisan79@yahoo.com\OrderGrid\OrderGrid\obj\Debug\OrderGrid.exe
 E:\_personale\professional\software\Visual Studio Projects\visualstudioonline\ovisan79@yahoo.com\OrderGrid\OrderGrid\obj\Debug\OrderGrid.pdb
+E:\_personale\professional\software\Visual Studio Projects\visualstudioonline\ovisan79@yahoo.com\OrderGrid\OrderGrid\bin\Debug\OrderGrid.exe
+E:\_personale\professional\software\Visual Studio Projects\visualstudioonline\ovisan79@yahoo.com\OrderGrid\OrderGrid\bin\Debug\OrderGrid.pdb
+E:\_personale\professional\software\Visual Studio Projects\visualstudioonline\ovisan79@yahoo.com\OrderGrid\OrderGrid\obj\Debug\OrderGrid.Form1.resources
+E:\_personale\professional\software\Visual Studio Projects\visualstudioonline\ovisan79@yahoo.com\OrderGrid\OrderGrid\obj\Debug\OrderGrid.Properties.Resources.resources
+E:\_personale\professional\software\Visual Studio Projects\visualstudioonline\ovisan79@yahoo.com\OrderGrid\OrderGrid\obj\Debug\OrderGrid.csproj.GenerateResource.Cache

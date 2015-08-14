@@ -22,16 +22,5 @@ namespace OrderGrid.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ax2012r2a;Initial Catalog=TestDB;Persist Security Info=True;User ID=s" +
-            "a;Password=pass@word1")]
-        public string TestDBConnectionString {
-            get {
-                return ((string)(this["TestDBConnectionString"]));
-            }
-        }
     }
 }
