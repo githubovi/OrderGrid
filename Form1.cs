@@ -1,4 +1,5 @@
-﻿using System;
+﻿//new
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,7 +14,7 @@ namespace OrderGrid
     public partial class Form1 : Form
     {
         DataTable dataTable;
-        
+
         public Form1()
         {
             InitializeComponent();
@@ -36,23 +37,90 @@ namespace OrderGrid
 
         private void buttonMoveUp_Click(object sender, EventArgs e)
         {
+            List<int> listSelectedValuesId = new List<int>();
             int currentValueId = (int)this.dataGridViewTestTable.CurrentRow.Cells["Id"].Value;
-            
-            if (currentValueId != 0)
+
+            //in order to get the value for indexRowLast right we temporarly disable adding right on grid; otherwise index would be +1 
+            bool allowUserToAddRows = this.dataGridViewTestTable.AllowUserToAddRows;
+            this.dataGridViewTestTable.AllowUserToAddRows = false;
+
+            int indexRowFirst = this.dataGridViewTestTable.Rows.GetFirstRow(DataGridViewElementStates.Visible);
+            int indexRowFirstSelected = this.dataGridViewTestTable.Rows.GetFirstRow(DataGridViewElementStates.Selected);
+
+            this.dataGridViewTestTable.AllowUserToAddRows = allowUserToAddRows;
+
+            //run it only if among the selected rows is not the first row 
+            if (indexRowFirst != indexRowFirstSelected)
             {
-                this.moveUpDown(currentValueId, -1);
-                this.positionCursorOnSelected(currentValueId);
+                //important! pick the selected records in the current ascending order
+                List<DataGridViewRow> selectedRows = (List<DataGridViewRow>)this.dataGridViewTestTable.SelectedRows
+                                                                    .Cast<DataGridViewRow>()
+                                                                    .OrderBy(r => r.Index)
+                                                                    .ToList<DataGridViewRow>();
+
+                foreach (DataGridViewRow selectedRow in selectedRows.ToArray())
+                {
+                    listSelectedValuesId.Add((int)selectedRow.Cells["Id"].Value);
+                }
+
+                foreach (int selectedValueId in listSelectedValuesId.ToArray())
+                {
+                    if (selectedValueId != 0)
+                    {
+                        //-1 means ascending
+                        this.moveUpDown(selectedValueId, -1);
+                    }
+                }
+
+                if (selectedRows.Count > 0)
+                {
+                    this.positionCursorOnSelected(listSelectedValuesId, currentValueId);
+                }
             }
         }
 
         private void buttonMoveDown_Click(object sender, EventArgs e)
         {
+            List<int> listSelectedValuesId = new List<int>();
             int currentValueId = (int)this.dataGridViewTestTable.CurrentRow.Cells["Id"].Value;
 
-            if (currentValueId != 0)
+            //in order to get the value for indexRowLast right we temporarly disable adding right on grid; otherwise index would be +1 
+            bool allowUserToAddRows = this.dataGridViewTestTable.AllowUserToAddRows;
+            this.dataGridViewTestTable.AllowUserToAddRows = false;
+
+            int indexRowLast = this.dataGridViewTestTable.Rows.GetLastRow(DataGridViewElementStates.Visible);
+            int indexRowLastSelected = this.dataGridViewTestTable.Rows.GetLastRow(DataGridViewElementStates.Selected);
+
+            this.dataGridViewTestTable.AllowUserToAddRows = allowUserToAddRows;
+
+            //run it only if among the selected rows is not the last row 
+            if (indexRowLast != indexRowLastSelected)
             {
-                this.moveUpDown(currentValueId, 1);
-                this.positionCursorOnSelected(currentValueId);
+                //important! pick the selected records in the current descending order
+                List<DataGridViewRow> selectedRows = (List<DataGridViewRow>)this.dataGridViewTestTable.SelectedRows
+                                                                    .Cast<DataGridViewRow>()
+                                                                    .OrderByDescending(r => r.Index)
+                                                                    .ToList<DataGridViewRow>();
+
+                foreach (DataGridViewRow selectedRow in selectedRows.ToArray())
+                {
+                    listSelectedValuesId.Add((int)selectedRow.Cells["Id"].Value);
+                }
+
+                foreach (int selectedValueId in listSelectedValuesId.ToArray())
+                {
+                    if (selectedValueId != 0)
+                    {
+                        //+1 means descending
+                        this.moveUpDown(selectedValueId, 1);
+                    }
+                }
+
+                if (selectedRows.Count > 0)
+                {
+
+                    this.positionCursorOnSelected(listSelectedValuesId, currentValueId);
+                }
             }
         }
 
@@ -62,30 +130,43 @@ namespace OrderGrid
             DataRow rowToMove = dataTable.Rows
                         .Cast<DataRow>()
                         .Where(r => (int)r["Id"] == idToMove)
-                        .OrderByDescending(r => r["Id"])
-                        .First();
+                        .OrderBy(r => r["Id"])
+                        .FirstOrDefault();
+
+
 
             if (rowToMove != null)
             {
                 //select and update the previous or next row
                 DataRow row = null;
-                switch (posToMove)
+                if (posToMove < 0)
                 {
-                    case -1:
-                        row = dataTable.Rows
-                            .Cast<DataRow>()
-                            .Where(r => (int)r["CurrentOrder"] < (int)rowToMove["CurrentOrder"])
-                            .OrderByDescending(r => r["CurrentOrder"])
-                            .FirstOrDefault();
-                        break;
+                    row = dataTable.Rows
+                        .Cast<DataRow>()
+                        .Where(r => (int)r["CurrentOrder"] < (int)rowToMove["CurrentOrder"])
+                        .OrderByDescending(r => r["CurrentOrder"])
+                        .FirstOrDefault();
+                }
+                else
+                {
+                    if (posToMove > 0)
+                    {
 
-                    case 1:
                         row = dataTable.Rows
                             .Cast<DataRow>()
+
+
+
+
+
+
+
+
                             .Where(r => (int)r["CurrentOrder"] > (int)rowToMove["CurrentOrder"])
                             .OrderBy(r => r["CurrentOrder"])
                             .FirstOrDefault();
-                        break;
+                    }
+
                 }
 
                 if (row != null)
@@ -109,24 +190,35 @@ namespace OrderGrid
             }
         }
 
-        private void positionCursorOnSelected(int idValue)
+        private void positionCursorOnSelected(List<int> listIdValue, int currentValueId)
         {
             bool valueAllowUserToAddRows = this.dataGridViewTestTable.AllowUserToAddRows;
 
             //temporary disable it
             this.dataGridViewTestTable.AllowUserToAddRows = false;
+            this.dataGridViewTestTable.ClearSelection();
 
-            DataGridViewRow row = this.dataGridViewTestTable.Rows
+            DataGridViewRow rowCurrentValueId = this.dataGridViewTestTable.Rows
                 .Cast<DataGridViewRow>()
-                .Where(r => r.Cells["Id"].Value.Equals(idValue))
+                .Where(r => r.Cells["Id"].Value.Equals(currentValueId))
                 .OrderByDescending(r => r.Cells["Id"])
                 .FirstOrDefault();
 
-            if (row != null)
+            this.dataGridViewTestTable.CurrentCell = rowCurrentValueId.Cells[1];
+
+            foreach (int idValue in listIdValue.ToArray())
             {
-                this.dataGridViewTestTable.ClearSelection();
-                this.dataGridViewTestTable.CurrentCell = this.dataGridViewTestTable.Rows[row.Index].Cells[0];
-                this.dataGridViewTestTable.Rows[row.Index].Selected = true;
+                DataGridViewRow row = this.dataGridViewTestTable.Rows
+                    .Cast<DataGridViewRow>()
+                    .Where(r => r.Cells["Id"].Value.Equals(idValue))
+                    .OrderByDescending(r => r.Cells["Id"])
+                    .FirstOrDefault();
+
+                if (row != null)
+                {
+
+                    this.dataGridViewTestTable.Rows[row.Index].Selected = true;
+                }
             }
 
             this.dataGridViewTestTable.AllowUserToAddRows = valueAllowUserToAddRows;
@@ -147,8 +239,8 @@ namespace OrderGrid
             table.Rows.Add(50, "Enebrel", 4);
             table.Rows.Add(100, "Dilantin", 5);
 
-            return table;            
-        
+            return table;
+
         }
 
 
