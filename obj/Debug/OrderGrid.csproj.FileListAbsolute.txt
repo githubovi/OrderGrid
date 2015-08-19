@@ -14,3 +14,6 @@ E:\_personale\professional\software\Visual Studio Projects\visualstudioonline\ov
 E:\_personale\professional\software\Visual Studio Projects\visualstudioonline\ovisan79@yahoo.com\OrderGrid\OrderGrid\obj\Debug\OrderGrid.Form1.resources
 E:\_personale\professional\software\Visual Studio Projects\visualstudioonline\ovisan79@yahoo.com\OrderGrid\OrderGrid\obj\Debug\OrderGrid.Properties.Resources.resources
 E:\_personale\professional\software\Visual Studio Projects\visualstudioonline\ovisan79@yahoo.com\OrderGrid\OrderGrid\obj\Debug\OrderGrid.csproj.GenerateResource.Cache
+E:\_personale\professional\software\Visual Studio Projects\github\learningTests\OrderGrid\OrderGrid\bin\Debug\OrderGrid.exe.config
+E:\_personale\professional\software\Visual Studio Projects\github\learningTests\OrderGrid\OrderGrid\obj\Debug\OrderGrid.exe
+E:\_personale\professional\software\Visual Studio Projects\github\learningTests\OrderGrid\OrderGrid\obj\Debug\OrderGrid.pdb
